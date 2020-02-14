@@ -1,3 +1,13 @@
+# general purpose bash one liners
+
+
+### get the total disk space stats
+
+```bash
+df -h | awk '{print $1 $2}'
+```
+
+
 # bioinformatics-one-liners
 my collection of bioinformatics one liners that is useful in my day-to-day work
 
