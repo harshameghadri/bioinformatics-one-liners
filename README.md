@@ -16,6 +16,20 @@ I also added some of my own tricks
 
 05/21/2015.
 
+### split a fastq file into singleton fastq (useful if you have downloaded from fastq-dump)
+
+for the left read
+```bash
+awk 'NR%2==1 { print $0 "/1" } ; NR%2==0 { print substr($0,0,length($0)/2) }'
+```
+
+for the right read
+
+```bash
+awk 'NR%2==1 { print $0 "/2" } ; NR%2==0 { print substr($0,length($0)/2+1) }'
+```
+from [biostars].https://www.biostars.org/p/19446/
+
 
 
 ####  get the sequences length distribution form a fastq file using awk
