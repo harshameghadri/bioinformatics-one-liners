@@ -23,11 +23,19 @@ grep -E 'SRR|ERR' XDR_169_ids.txt > downloads.txt
 ```
 #### Find SRAs from SRS:
 ```bash
-grep 'SRS' XDR_169_ids.txt | parallel "esearch -db sra -query {} | efetch --format runinfo | cut -d ',' -f 1 | grep SRR" >> downloads.txt```
+grep 'SRS' XDR_169_ids.txt | parallel "esearch -db sra -query {} | efetch --format runinfo | cut -d ',' -f 1 | grep SRR" >> downloads.txt
+```
 
 #### Now make sure there are no duplicates, then download using GNU parallel to have 4 (or as many your disk can handle) streams in parallel:
+
 ```bash
 sort -u downloads.txt | parallel -j 4 "prefetch {}"
+```
+
+### To directly download fastq's on to current working directory using gnu parallel (this example runs 10 jobs in parallel)
+
+```bash
+sort -u accession_list.txt | parallel -j 10 "fasterq-dump --split-3 --threads 15 {}"
 ```
 
 ### split a fastq file into singleton fastq (useful if you have downloaded from fastq-dump)
