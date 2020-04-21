@@ -17,14 +17,18 @@ I also added some of my own tricks
 05/21/2015.
 
 #### Bulk download SRA files using prefetch using GNU parallel
-Extract SRR/ERR:	grep -E 'SRR|ERR' XDR_169_ids.txt > downloads.txt
-
+Extract SRR/ERR:	
+```bash
+grep -E 'SRR|ERR' XDR_169_ids.txt > downloads.txt
+```
 #### Find SRAs from SRS:
-grep 'SRS' XDR_169_ids.txt | parallel "esearch -db sra -query {} | efetch --format runinfo | cut -d ',' -f 1 | grep SRR" >> downloads.txt
+```bash
+grep 'SRS' XDR_169_ids.txt | parallel "esearch -db sra -query {} | efetch --format runinfo | cut -d ',' -f 1 | grep SRR" >> downloads.txt```
 
 #### Now make sure there are no duplicates, then download using GNU parallel to have 4 (or as many your disk can handle) streams in parallel:
+```bash
 sort -u downloads.txt | parallel -j 4 "prefetch {}"
-
+```
 
 ### split a fastq file into singleton fastq (useful if you have downloaded from fastq-dump)
 
