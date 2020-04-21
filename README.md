@@ -9,12 +9,22 @@ df -h | awk '{print $1 $2}'
 
 
 # bioinformatics-one-liners
-my collection of bioinformatics one liners that is useful in my day-to-day work
+my collection of bioinformatics one liners that is useful in my day-to-day work (Ming Tang)
 
 ### I came across the bioinformatics one-liners on the [biostar](https://www.biostars.org/p/142545/) forum and gathered them here.
 I also added some of my own tricks
 
 05/21/2015.
+
+#### Bulk download SRA files using prefetch using GNU parallel
+Extract SRR/ERR:	grep -E 'SRR|ERR' XDR_169_ids.txt > downloads.txt
+
+#### Find SRAs from SRS:
+grep 'SRS' XDR_169_ids.txt | parallel "esearch -db sra -query {} | efetch --format runinfo | cut -d ',' -f 1 | grep SRR" >> downloads.txt
+
+#### Now make sure there are no duplicates, then download using GNU parallel to have 4 (or as many your disk can handle) streams in parallel:
+sort -u downloads.txt | parallel -j 4 "prefetch {}"
+
 
 ### split a fastq file into singleton fastq (useful if you have downloaded from fastq-dump)
 
